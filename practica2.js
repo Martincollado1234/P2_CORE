@@ -2,7 +2,8 @@
 const Habitacion = require('./habitacion');
 const Climatizador = require('./climatizador');
 const Termostato = require('./termostato');
-
+const EventEmitter = require ('./events');
+const Programador = require ('./programador');
 // Creamos una habitacion:
 const dormitorio = new Habitacion();
 dormitorio.temperatura = 22;
@@ -17,12 +18,23 @@ const termostato = new Termostato(dormitorio);
 termostato.on('muchofrio', () => climatizador.calentar());
 termostato.on('muchocalor', () => climatizador.enfriar());
 
+
 // Mostar la temperatura periodicamente:
 termostato.on('tic', (temp) => console.log(`${temp.toFixed(1)}ºC`));
-
+termostato.on('ideal', (temperaturaIdeal) => termostato.indicarTemperaturaIdeal(temperaturaIdeal));
 // Configurar la temp ideal a 20 grados:
 termostato.indicarTemperaturaIdeal(20);
 
 // Encender el termostato:
 termostato.encender();
+
+const configuracionProgramador =[  
+  { hora: "07:00",    temperatura: 22  },  
+  { hora: "08:30",    temperatura: 18  },  
+  { hora: "18:00",    temperatura: 22  },  
+  { hora: "23:00",    temperatura: 20 }
+  ]
+  
+  
+const programador = new Programador(configuracionProgramador);
 
